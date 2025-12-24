@@ -1,0 +1,46 @@
+name: flutter_application_1
+description: "A new Flutter project."
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.2 # Your current SDK is fine
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  sign_in_button: ^3.0.0
+  flutter_map: ^7.0.0 # Latest as of Dec 2025
+  latlong2: ^0.9.1
+  http: ^1.4.0
+  # Firebase Dependencies - ADD THESE
+  firebase_core: ^3.6.0 # Required to initialize Firebase
+  firebase_auth: ^5.3.1 # For email/password and auth state
+  cloud_firestore: ^5.4.4 # For storing/retrieving travel guides
+  google_sign_in: ^6.2.1 # For Google Sign-In button
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/logo.png
+    - assets/images/images.jpg
+    - assets/images/images1.jpg
+    - assets/images/images2.jpg
+    - assets/images/images3.jpg
+    - assets/images/download.jpg
+    - assets/images/image4.png
+    - assets/images/image5.png
+    - assets/images/image6.png
+    - assets/images/image7.png
+    - assets/images/image8.png
+    - assets/images/image9.png
+
+    # Add more assets here as needed
