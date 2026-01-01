@@ -21,10 +21,7 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for ios - '
@@ -61,4 +58,13 @@ class DefaultFirebaseOptions {
     storageBucket: 'ethiotravel-e47c0.firebasestorage.app',
     measurementId: 'G-Y79PE64DHT',
   );
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyANg343_QeQgPllgWvuP6fdfi0JmtuGPhA',
+    appId: '1:1056238909978:android:a899601cdade84ddffefa3',
+    messagingSenderId: '1056238909978',
+    projectId: 'ethiotravel-e47c0',
+    storageBucket: 'ethiotravel-e47c0.firebasestorage.app',
+  );
+
 }

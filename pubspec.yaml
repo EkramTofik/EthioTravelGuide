@@ -12,15 +12,17 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   sign_in_button: ^3.0.0
-  flutter_map: ^7.0.0 # Latest as of Dec 2025
-  latlong2: ^0.9.1
   http: ^1.4.0
   # Firebase Dependencies - ADD THESE
   firebase_core: ^3.6.0 # Required to initialize Firebase
   firebase_auth: ^5.3.1 # For email/password and auth state
   cloud_firestore: ^5.4.4 # For storing/retrieving travel guides
   google_sign_in: ^6.2.1 # For Google Sign-In button
-
+  image_picker: ^1.0.7
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.0
+  url_launcher: ^6.1.14
+  geolocator: ^9.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "1056238909978",
+    "project_id": "ethiotravel-e47c0",
+    "storage_bucket": "ethiotravel-e47c0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056238909978:android:a899601cdade84ddffefa3",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1056238909978-cvv93on9k2caoo3rihkke626dr35vfik.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_application_1",
+            "certificate_hash": "16fcd40bce4a547804fde2a6bea05420e39768d6"
+          }
+        },
+        {
+          "client_id": "1056238909978-tu65oujnh6pi1uohh5s4742dp925vikr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANg343_QeQgPllgWvuP6fdfi0JmtuGPhA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1056238909978-tu65oujnh6pi1uohh5s4742dp925vikr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1056238909978-7kei2dt5m5so9iaivcl2716vv3fsif17.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterApplication1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

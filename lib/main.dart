@@ -1,9 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'firebase_options.dart';
-import 'landing_page.dart'; // Public page (no login)
-import 'authenticated_main.dart'; // Full app with bottom tabs after login
+import 'login.dart';
+import 'authenticated_main.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Roboto',
         primaryColor: const Color(0xFF2B60B6),
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: const Color(0xFFFFF5F5),
       ),
       home: const SplashPage(),
     );
@@ -46,48 +47,43 @@ class _SplashPageState extends State<SplashPage>
   void initState() {
     super.initState();
 
-    // Animations
     _controller = AnimationController(
-      duration: const Duration(seconds: 3),
+      duration: const Duration(milliseconds: 1200),
       vsync: this,
     );
 
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.0, 0.7, curve: Curves.easeIn),
+        curve: const Interval(0.0, 0.8, curve: Curves.easeInOut),
       ),
     );
 
-    _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
+    _scaleAnimation = Tween<double>(begin: 0.9, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.0, 0.7, curve: Curves.elasticOut),
+        curve: const Interval(0.0, 0.8, curve: Curves.easeOutBack),
       ),
     );
 
     _controller.forward();
+    _goNext();
+  }
 
-    // Navigate after 4 seconds
-    Future.delayed(const Duration(seconds: 8), () {
-      if (!mounted) return;
-
-      final user = FirebaseAuth.instance.currentUser;
-      Widget nextPage = user != null
-          ? const AuthenticatedMain()
-          : const LandingPage();
-
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 800),
-          pageBuilder: (_, __, ___) => nextPage,
-          transitionsBuilder: (_, animation, __, child) {
-            return FadeTransition(opacity: animation, child: child);
-          },
-        ),
-      );
-    });
+  Future<void> _goNext() async {
+    await Future.delayed(const Duration(seconds: 10));
+    if (!mounted) return;
+    const nextPage = LoginPage();
+    if (!mounted) return;
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 600),
+        pageBuilder: (_, __, ___) => nextPage,
+        transitionsBuilder: (_, animation, __, child) =>
+            FadeTransition(opacity: animation, child: child),
+      ),
+    );
   }
 
   @override
@@ -98,15 +94,12 @@ class _SplashPageState extends State<SplashPage>
 
   @override
   Widget build(BuildContext context) {
+    const coral = Color(0xFFF0856A);
+    const blue = Color(0xFF2B60B6);
+
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF2B60B6), Color(0xFFD6EBFF)],
-          ),
-        ),
+        color: const Color(0xFFFFF5F5),
         child: Center(
           child: FadeTransition(
             opacity: _fadeAnimation,
@@ -115,67 +108,62 @@ class _SplashPageState extends State<SplashPage>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Logo with glow effect
                   Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.white.withOpacity(0.5),
-                          blurRadius: 30,
-                          spreadRadius: 10,
+                          color: Colors.black.withOpacity(0.06),
+                          blurRadius: 24,
+                          offset: const Offset(0, 8),
                         ),
                       ],
                     ),
                     child: CircleAvatar(
-                      radius: 80,
+                      radius: 64,
                       backgroundColor: Colors.white,
                       child: ClipOval(
                         child: Image.asset(
-                          "images/logo.png",
-                          width: 140,
-                          height: 140,
+                          'assets/images/logo.png',
+                          width: 112,
+                          height: 112,
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 40),
-                  // App Title
-                  const Text(
-                    'EthioTravel',
-                    style: TextStyle(
-                      fontSize: 42,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: 2,
-                      shadows: [
-                        Shadow(
-                          color: Colors.black26,
-                          offset: Offset(2, 2),
-                          blurRadius: 4,
+                  const SizedBox(height: 28),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: const TextSpan(
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.w700,
+                        height: 1.25,
+                        letterSpacing: 0.5,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: 'Ethio',
+                          style: TextStyle(color: coral),
+                        ),
+                        TextSpan(
+                          text: 'Tra',
+                          style: TextStyle(color: blue),
+                        ),
+                        TextSpan(
+                          text: '\nvel ',
+                          style: TextStyle(color: blue),
+                        ),
+                        TextSpan(
+                          text: 'Guide',
+                          style: TextStyle(
+                            color: coral,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                  const Text(
-                    'Guide',
-                    style: TextStyle(
-                      fontSize: 32,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                  const SizedBox(height: 60),
-                  // Loading
-                  const CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    strokeWidth: 6,
-                  ),
-                  const SizedBox(height: 24),
-                  const Text(
-                    'Discover Ethiopia\'s Wonders',
-                    style: TextStyle(fontSize: 18, color: Colors.white70),
                   ),
                 ],
               ),
