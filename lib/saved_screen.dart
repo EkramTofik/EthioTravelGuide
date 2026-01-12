@@ -23,6 +23,8 @@ class _SavedScreenState extends State<SavedScreen> {
   static const _softBadge = Color(0xFFEDE8F7);
   static const _red = Color(0xFFF64F59);
 
+  int? _lastSavedCount;
+
   Stream<QuerySnapshot<Map<String, dynamic>>> _savedStream(String uid) {
     return FirebaseFirestore.instance
         .collection('user')
@@ -56,7 +58,6 @@ class _SavedScreenState extends State<SavedScreen> {
           .collection(legacy ? 'saved' : 'savedDestinations')
           .doc(id)
           .delete();
-      await _incrementSavedCount(uid, -1);
     } catch (_) {
       // ignore counter errors
     }
@@ -72,14 +73,10 @@ class _SavedScreenState extends State<SavedScreen> {
     }
   }
 
-  Future<void> _incrementSavedCount(String uid, int delta) async {
-    try {
-      await FirebaseFirestore.instance.collection('user').doc(uid).set({
-        'savedCount': FieldValue.increment(delta),
-      }, SetOptions(merge: true));
-    } catch (_) {
-      // ignore counter errors
-    }
+  void _updateSavedCount(String uid, int count) {
+    if (_lastSavedCount == count) return;
+    _lastSavedCount = count;
+    _setSavedCount(uid, count);
   }
 
   void _openDetails(BuildContext context, String destinationId) {
@@ -112,7 +109,7 @@ class _SavedScreenState extends State<SavedScreen> {
     required bool legacy,
   }) {
     final count = docs.length;
-    _setSavedCount(uid, count); // keep savedCount in user doc
+    _updateSavedCount(uid, count); // keep savedCount in user doc
 
     return ListView(
       padding: EdgeInsets.zero,
@@ -212,7 +209,7 @@ class _SavedScreenState extends State<SavedScreen> {
                   return Center(child: Text('Error: ${legacySnap.error}'));
                 }
                 final fallbackDocs = legacySnap.data ?? [];
-                _setSavedCount(uid, fallbackDocs.length);
+                _updateSavedCount(uid, fallbackDocs.length);
                 return _buildList(context, fallbackDocs, uid, legacy: true);
               },
             );
