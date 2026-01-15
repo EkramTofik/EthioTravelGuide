@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'destination_detail_page.dart';
 import 'places_screen.dart';
+import 'chatbot_screen.dart';
 
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
@@ -25,6 +26,7 @@ class HomeTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: _bg,
+      floatingActionButton: _ChatbotFab(),
       body: SafeArea(
         top: false,
         child: ListView(
@@ -144,6 +146,127 @@ class HomeTab extends StatelessWidget {
   }
 }
 
+class _ChatbotFab extends StatefulWidget {
+  @override
+  State<_ChatbotFab> createState() => _ChatbotFabState();
+}
+
+class _ChatbotFabState extends State<_ChatbotFab>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+  bool _isHovering = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _scaleAnimation = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.05), weight: 1),
+      TweenSequenceItem(tween: Tween(begin: 1.05, end: 1.0), weight: 1),
+    ]).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovering = true),
+      onExit: (_) => setState(() => _isHovering = false),
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          width: _isHovering ? 72 : 68,
+          height: _isHovering ? 72 : 68,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                HomeTab._buttonBlue,
+                Color.lerp(HomeTab._buttonBlue, Colors.white, 0.2)!,
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: HomeTab._buttonBlue.withOpacity(_isHovering ? 0.6 : 0.4),
+                blurRadius: _isHovering ? 20 : 15,
+                spreadRadius: _isHovering ? 3 : 2,
+                offset: const Offset(0, 5),
+              ),
+              const BoxShadow(
+                color: Colors.black12,
+                blurRadius: 8,
+                offset: Offset(0, 2),
+              ),
+            ],
+            border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
+          ),
+          child: Material(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(50),
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const ChatbotScreen()),
+                );
+              },
+              borderRadius: BorderRadius.circular(50),
+              splashColor: Colors.white.withOpacity(0.3),
+              highlightColor: Colors.white.withOpacity(0.1),
+              child: Stack(
+                children: [
+                  Center(
+                    child: Icon(
+                      Icons.chat_bubble_outline,
+                      size: _isHovering ? 30 : 28,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Positioned(
+                    right: 10,
+                    top: 10,
+                    child: Container(
+                      width: _isHovering ? 16 : 14,
+                      height: _isHovering ? 16 : 14,
+                      decoration: BoxDecoration(
+                        color: Colors.greenAccent[400],
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.greenAccent.withOpacity(0.8),
+                            blurRadius: 4,
+                            spreadRadius: 1,
+                          ),
+                        ],
+                      ),
+                      child: const Center(
+                        child: Icon(Icons.check, size: 8, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _HeroHeader extends StatelessWidget {
   const _HeroHeader();
 
@@ -155,7 +278,7 @@ class _HeroHeader extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset('assets/images/images3.jpg', fit: BoxFit.cover),
+          Image.asset('assets/images/image.png', fit: BoxFit.cover),
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -170,10 +293,11 @@ class _HeroHeader extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 26),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                const SizedBox(height: 8),
                 Align(
                   alignment: Alignment.topCenter,
                   child: _Pill(
@@ -184,7 +308,7 @@ class _HeroHeader extends StatelessWidget {
                     vertical: 8,
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(height: 40),
                 const Text(
                   'EthioTravel\nGuide',
                   textAlign: TextAlign.center,
@@ -197,7 +321,7 @@ class _HeroHeader extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 const Text(
-                  'Discover Ethiopia’s History,\nCulture, and Natural Beauty',
+                  'Discover Ethiopia\'s History,\nCulture, and Natural Beauty',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white70,

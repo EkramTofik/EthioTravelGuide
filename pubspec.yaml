@@ -36,7 +36,6 @@ flutter:
     - assets/images/images.jpg
     - assets/images/images1.jpg
     - assets/images/images2.jpg
-    - assets/images/images3.jpg
     - assets/images/download.jpg
     - assets/images/image4.png
     - assets/images/image5.png
@@ -44,5 +43,5 @@ flutter:
     - assets/images/image7.png
     - assets/images/image8.png
     - assets/images/image9.png
-
+    - assets/images/image.png
     # Add more assets here as needed

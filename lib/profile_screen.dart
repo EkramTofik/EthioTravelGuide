@@ -12,7 +12,7 @@ class ProfileScreen extends StatefulWidget {
     this.initialName = 'ekram tofik',
     this.initialEmail = 'ekram31@gmail.com',
     this.joinedDays = 1,
-    this.coverAssetPath = 'assets/images/images3.jpg',
+    this.coverAssetPath = 'assets/images/image.png',
     this.initialAvatarPath,
     this.initialAvatarBytes,
     this.userId,
@@ -477,7 +477,18 @@ class _Header extends StatelessWidget {
           children: [
             IconButton(
               icon: Icon(Icons.arrow_back, color: navy, size: 28),
-              onPressed: () => Navigator.of(context).maybePop(),
+              onPressed: () async {
+                final nav = Navigator.of(context);
+                final popped = await nav.maybePop();
+                if (popped) return;
+                final rootNav = Navigator.of(context, rootNavigator: true);
+                final rootPopped = await rootNav.maybePop();
+                if (rootPopped) return;
+
+                if (nav.canPop()) {
+                  nav.pop();
+                }
+              },
               splashRadius: 24,
             ),
             Expanded(
